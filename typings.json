@@ -1,0 +1,9 @@
+{
+  "name": "ts-todo-backend",
+  "globalDependencies": {
+    "assertion-error": "github:DefinitelyTyped/DefinitelyTyped/assertion-error/assertion-error.d.ts#88c0d5f868bc184d70b6799d36b1946787beb48d",
+    "chai": "github:DefinitelyTyped/DefinitelyTyped/chai/chai.d.ts#88c0d5f868bc184d70b6799d36b1946787beb48d",
+    "mocha": "github:DefinitelyTyped/DefinitelyTyped/mocha/mocha.d.ts#88c0d5f868bc184d70b6799d36b1946787beb48d",
+    "mysql": "registry:dt/mysql#0.0.0+20160316155526"
+  }
+}

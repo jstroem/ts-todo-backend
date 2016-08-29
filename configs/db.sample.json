@@ -1,0 +1,12 @@
+{
+  "localhost": {
+    "driver": "mysql",
+    "host": "localhost",
+    "database": "todoapp",
+    "user": "todoapp",
+    "password": "password",
+    "multiple-statements": true
+  },
+
+  "defaultEnv": "localhost"
+}
