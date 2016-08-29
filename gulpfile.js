@@ -9,12 +9,14 @@ let nodemon = require('gulp-nodemon')
 var mocha = require('gulp-mocha')
 var istanbul = require('gulp-istanbul')
 var coveralls = require('gulp-coveralls')
+var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
 // /*  Variables */
 let tsProject = tsc.createProject('tsconfig.json')
 let sourceFiles = 'src/**/*.ts'
 let testFiles = 'test/**/*.ts'
 let outDir = require('./tsconfig.json').compilerOptions.outDir
+let buildSourceFiles = outDir + '/src/**/*.js';
 let entryPoint = './build/src/server.js'
 
 /**
@@ -43,7 +45,6 @@ gulp.task('compile', ['clean'], () => {
         .pipe(sourcemaps.init())
         .pipe(tsc(tsProject))
     return tsResult.js
-        .pipe(istanbul())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(outDir))
 })
@@ -64,14 +65,37 @@ gulp.task('build', ['compile'], () => {
     console.log('Building the project ...')
 })
 
+gulp.task("istanbul:hook", ['compile'], function() {
+  console.log("Build source files", buildSourceFiles);
+    return gulp.src([buildSourceFiles])
+        // Covering files
+        .pipe(istanbul())
+        // Force `require` to return covered files
+        .pipe(istanbul.hookRequire());
+});
+
 gulp.task('coveralls', function () {
   gulp.src('coverage/lcov.info').pipe(coveralls());
 });
 
-gulp.task('test', ['build'], () => {
+//using remap-istanbul we can point our coverage data back to the original ts files
+function remapCoverageFiles() {
+    return gulp.src('./coverage/coverage-final.json')
+    .pipe(remapIstanbul({
+        basePath: '.',
+        reports: {
+            'html': './coverage',
+            'text-summary': null,
+            'lcovonly': './coverage/lcov.info'
+        }
+    }));
+}
+
+gulp.task('test', ['istanbul:hook'], () => {
     return gulp.src(['build/test/**/*.js'], { read: false })
         .pipe(mocha({ reporter: 'list' }))
         .pipe(istanbul.writeReports())
+        .on('end', remapCoverageFiles) //perform a remap
         .once('error', () => {
             process.exit(1);
         })
