@@ -8,6 +8,7 @@ let tslint = require('gulp-tslint')
 let nodemon = require('gulp-nodemon')
 var mocha = require('gulp-mocha')
 var istanbul = require('gulp-istanbul')
+var coveralls = require('gulp-coveralls')
 
 // /*  Variables */
 let tsProject = tsc.createProject('tsconfig.json')
@@ -42,6 +43,7 @@ gulp.task('compile', ['clean'], () => {
         .pipe(sourcemaps.init())
         .pipe(tsc(tsProject))
     return tsResult.js
+        .pipe(istanbul())
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(outDir))
 })
@@ -62,9 +64,14 @@ gulp.task('build', ['compile'], () => {
     console.log('Building the project ...')
 })
 
+gulp.task('coveralls', function () {
+  gulp.src('coverage/lcov.info').pipe(coveralls());
+});
+
 gulp.task('test', ['build'], () => {
     return gulp.src(['build/test/**/*.js'], { read: false })
         .pipe(mocha({ reporter: 'list' }))
+        .pipe(istanbul.writeReports())
         .once('error', () => {
             process.exit(1);
         })
