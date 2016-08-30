@@ -1,20 +1,20 @@
 "use strict";
-const modelHelper = require("./modelHelper");
+const ModelHelper = require("./ModelHelper");
 const table = "todos";
 function Get(id) {
-    return modelHelper.Get(table, id);
+    return ModelHelper.Get(table, id);
 }
 exports.Get = Get;
 function Create(params) {
-    return modelHelper.Create(table, params);
+    return ModelHelper.Create(table, params);
 }
 exports.Create = Create;
 function Remove(id) {
-    return modelHelper.Remove(table, id);
+    return ModelHelper.Remove(table, id);
 }
 exports.Remove = Remove;
 function Update(todo) {
-    return modelHelper.Update(table, todo);
+    return ModelHelper.Update(table, todo);
 }
 exports.Update = Update;
 

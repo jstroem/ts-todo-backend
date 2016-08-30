@@ -8,5 +8,13 @@
     "multiple-statements": true
   },
 
+  "travis": {
+    "driver": "mysql",
+    "host": "127.0.0.1",
+    "database": "todoapp",
+    "user": "root",
+    "multiple-statements": true
+  },
+
   "defaultEnv": "localhost"
 }

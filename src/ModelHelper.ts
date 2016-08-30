@@ -1,4 +1,4 @@
-import {createConnection } from "./DB";
+import { createConnection } from "./DB";
 
 function typeCast(field: any, next: Function) {
   if (field.type === "TINY" && field.length === 1) {

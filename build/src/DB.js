@@ -2,7 +2,10 @@
 const mysql = require("mysql");
 let config = require("./../../configs/db.json");
 function createConnection() {
-    return mysql.createConnection(config[config["defaultEnv"]]);
+    let defaultEnv = config["defaultEnv"];
+    if (process.env.ENV && config[process.env.ENV])
+        defaultEnv = process.env.ENV;
+    return mysql.createConnection(config[defaultEnv]);
 }
 exports.createConnection = createConnection;
 

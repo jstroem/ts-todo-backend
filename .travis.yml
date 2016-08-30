@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+  - '4'
+install:
+  - npm uninstall typescript tslint
+  - npm install
+  - npm update
+
+services:
+  - mysql
+
+before_script:
+  - mysql -e 'create database todoapp'
+  - 'export ENV=travis'
+  - 'cp configs/db.sample.json configs/db.json'
+  - './node_modules/.bin/db-migrate -c configs/db.sample.json up'
+  - 'npm install -g mocha gulp typings'
+  - 'typings install'
+script:
+  - 'npm test'
