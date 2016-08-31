@@ -16,5 +16,9 @@ before_script:
   - './node_modules/.bin/db-migrate up --config configs/db.json --env travis'
   - 'npm install -g mocha gulp typings'
   - 'typings install'
+
 script:
   - 'npm test'
+
+after_success:
+  - coveralls
