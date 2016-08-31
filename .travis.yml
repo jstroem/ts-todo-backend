@@ -9,12 +9,14 @@ install:
 services:
   - mysql
 
+env:
+  - ENV=travis
+
 before_script:
   - mysql -e 'create database todoapp'
-  - 'export ENV=travis'
   - 'cp configs/db.sample.json configs/db.json'
   - './node_modules/.bin/db-migrate up --config configs/db.json --env travis'
-  - 'npm install -g mocha gulp typings'
+  - 'npm install -g mocha gulp typings coveralls'
   - 'typings install'
 
 script:
