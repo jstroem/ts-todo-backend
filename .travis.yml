@@ -16,7 +16,7 @@ before_script:
   - mysql -e 'create database todoapp'
   - 'cp configs/db.sample.json configs/db.json'
   - './node_modules/.bin/db-migrate up --config configs/db.json --env travis'
-  - 'npm install -g mocha gulp typings coveralls'
+  - 'npm install -g mocha gulp typings'
   - 'typings install'
 
 script:
